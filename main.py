@@ -8,7 +8,6 @@ import plotly.graph_objects as go
 API_KEY = "7ec80289916b7564f7581d20da27f604"
 BASE_URL = "http://api.openweathermap.org/data/2.5/forecast"
 
-
 def get_weather_data(city):
     url = BASE_URL
     params = {
@@ -20,39 +19,24 @@ def get_weather_data(city):
     response = requests.get(url, params=params)
     return response.json() if response.status_code == 200 else None
 
-
-def get_city_coordinates(city):
-    url = "http://api.openweathermap.org/geo/1.0/direct"
-    params = {
-        "q": city,
-        "appid": API_KEY,
-        "limit": 1
-    }
-    response = requests.get(url, params=params)
-    data = response.json()
-    return (data[0]["lat"], data[0]["lon"]) if data else (None, None)
-
-
 server = Flask(__name__)
-
 
 @server.route('/')
 def index():
     return render_template('index.html')
 
+@server.route('/weather')
+def weather():
+    return render_template('weather.html')
 
 app = dash.Dash(__name__, server=server, url_base_pathname='/dash/')
 
 app.layout = html.Div([
-    html.H1("Визуализация погодных данных", style={"textAlign": "center", "marginBottom": "20px"}),
-
-    html.Div([
-        dcc.Input(id="start-city", type="text", placeholder="Начальная точка", style={"width": "100%"}),
-        dcc.Textarea(id="mid-cities", placeholder="Промежуточные точки (по одной в строке)",
-                     style={"width": "100%", "height": "100px"}),
-        dcc.Input(id="end-city", type="text", placeholder="Конечная точка", style={"width": "100%"}),
-        html.Button("Отправить", id="submit-button", n_clicks=0, style={"marginTop": "10px"})
-    ], style={"marginBottom": "20px"}),
+    dcc.Input(id="start-city", type="text", placeholder="Начальная точка", style={"width": "100%"}),
+    dcc.Textarea(id="mid-cities", placeholder="Промежуточные точки (по одной в строке)",
+                 style={"width": "100%", "height": "100px"}),
+    dcc.Input(id="end-city", type="text", placeholder="Конечная точка", style={"width": "100%"}),
+    html.Button("Отправить", id="submit-button", n_clicks=0, style={"marginTop": "10px"}),
 
     dcc.Dropdown(
         id='parameter-dropdown',
@@ -68,7 +52,6 @@ app.layout = html.Div([
 
     dcc.Graph(id="weather-graph"),
 ])
-
 
 @app.callback(
     Output("weather-graph", "figure"),
@@ -135,7 +118,6 @@ def update_graph(n_clicks, selected_parameter, start_city, mid_cities, end_city)
                       hovermode="x unified")
 
     return fig
-
 
 if __name__ == "__main__":
     app.run(debug=True)
