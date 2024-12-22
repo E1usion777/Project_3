@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Визуализация погоды</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #343a40;
+        }
+        .form-control, .btn {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center">Визуализация погодных данных</h1>
+        <div class="form-group">
+            <input type="text" id="start-city" class="form-control" placeholder="Начальная точка">
+            <textarea id="mid-cities" class="form-control" placeholder="Промежуточные точки (по одной в строке)" rows="3"></textarea>
+            <input type="text" id="end-city" class="form-control" placeholder="Конечная точка">
+            <button id="submit-button" class="btn btn-primary btn-block">Отправить</button>
+        </div>
+
+        <div class="form-group">
+            <select id='parameter-dropdown' class='form-control'>
+                <option value='temperature'>Температура</option>
+                <option value='wind_speed'>Скорость ветра</option>
+                <option value='precipitation'>Вероятность осадков</option>
+            </select>
+        </div>
+
+        <div id="weather-graph"></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="/dash"></script>
+</body>
+</html>
